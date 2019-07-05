@@ -1,0 +1,145 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.ai</groupId>
+  <artifactId>ai-dubbo-provider</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>ai-dubbo-provider</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <dependency>
+    	<groupId>com.ai</groupId>
+  		<artifactId>ai-dubbo-common</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    
+    <dependency>
+    	<groupId>com.alibaba</groupId>
+  		<artifactId>dubbo</artifactId>
+  		<version>2.6.2</version>
+    </dependency>
+    
+    <dependency>
+    	<groupId>com.101tec</groupId>
+  		<artifactId>zkclient</artifactId>
+  		<version>0.9</version>
+    </dependency>
+    
+    <dependency>
+    	<groupId>org.apache.zookeeper</groupId>
+  		<artifactId>zookeeper</artifactId>
+  		<version>3.4.9</version>
+  		<exclusions>
+  			<exclusion>
+  				<groupId>log4j</groupId>
+  				<artifactId>log4j</artifactId>
+  			</exclusion>
+  		</exclusions>
+    </dependency>
+    
+    <dependency>
+    	<groupId>log4j</groupId>
+  		<artifactId>log4j</artifactId>
+  		<version>1.2.16</version>
+    </dependency>
+    <dependency>
+    	<groupId>junit</groupId>
+  		<artifactId>junit</artifactId>
+  		<version>3.8.1</version>
+  		<scope>test</scope>
+    </dependency>
+  </dependencies>
+    <build>
+     <finalName>service-user</finalName>
+    <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+				<filtering>true</filtering>
+                <includes>
+                	<include>**/*.xml</include>
+                	<include>**/*.properties</include>
+                </includes>
+                <excludes>
+                	<exclude>spring-dubbo-provider.xml</exclude>
+                </excludes>
+            </resource>
+            <resource>
+            	<targetPath>${project.build.directory}/classes/META-INF/spring</targetPath>
+            	<directory>src/main/resources</directory>
+            	<filtering>true</filtering>
+            	<includes>
+            		<include>spring-dubbo-provider.xml</include>
+            	</includes>
+            </resource>
+        </resources>
+  <plugins>
+  
+  		
+  		<plugin>
+  			<groupId>org.apache.maven.plugins</groupId>
+  			<artifactId>maven-compiler-plugin</artifactId>
+  			<configuration>
+  				<source>1.8</source>
+				<target>1.8</target>
+				<encoding>UTF-8</encoding>
+  			</configuration>
+  		</plugin>
+  		<plugin>
+  			<groupId>org.apache.maven.plugins</groupId>
+  			<artifactId>maven-war-plugin</artifactId>
+  			<version>3.2.0</version>
+  		</plugin>
+  		
+  		 <!-- 打包jar文件时，配置manifest文件，加入lib包的jar依赖 -->  
+    <plugin>  
+        <groupId>org.apache.maven.plugins</groupId>  
+        <artifactId>maven-jar-plugin</artifactId>  
+        <configuration>  
+            <classesDirectory>target/classes/</classesDirectory>  
+            <archive>  
+                <manifest>  
+                    <mainClass>com.alibaba.dubbo.container.Main</mainClass>  
+                    <!-- 打包时 MANIFEST.MF文件不记录的时间戳版本 -->  
+                    <useUniqueVersions>false</useUniqueVersions>  
+                    <addClasspath>true</addClasspath>  
+                    <classpathPrefix>lib/</classpathPrefix>  
+                </manifest>  
+                <manifestEntries>  
+                    <Class-Path>.</Class-Path>  
+                </manifestEntries>  
+            </archive>  
+        </configuration>  
+    </plugin>
+    
+    <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-dependency-plugin</artifactId>
+    <executions>
+      <execution>
+        <id>copy-dependencies</id>
+        <phase>package</phase>
+        <goals>
+          <goal>copy-dependencies</goal>
+        </goals>
+        <configuration>
+          <type>jar</type>
+          <includeTypes>jar</includeTypes>
+          <useUniqueVersions>false</useUniqueVersions>
+          <outputDirectory>
+            ${project.build.directory}/lib
+          </outputDirectory>
+        </configuration>
+      </execution>
+    </executions>
+  </plugin>
+  	</plugins>
+  </build>
+</project>

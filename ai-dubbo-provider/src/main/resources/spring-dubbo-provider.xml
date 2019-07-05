@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+	
+	<!-- dubbo应用name -->
+	<dubbo:application name="ai-dubbo-provider" owner="sky"></dubbo:application>
+	
+	<!-- dubbo协议 
+		name="dubbo" 使用dubbo协议
+		port = "20880" 服务提供者监听端口,同一个电脑上服务提供者的监听端口
+	-->
+	<dubbo:protocol name="dubbo" port="20880"></dubbo:protocol>
+	
+	<!-- 局域网广播注册中心 -->
+	<dubbo:registry address="multicast://239.5.6.7:1234"></dubbo:registry>
+	
+	<!-- 配置式发布 -->
+	<!-- spring配置本地bean -->
+	<!-- <bean id ="userService" class="com.ai.dubbo.service.impl.UserServiceImpl"></bean>
+	把本地bean注册成远程服务
+		ref 哪个本地bean
+		interface 以什么接口来暴露
+	
+	 <dubbo:service interface="com.ai.dubbo.service.IUserService" ref="userService"></dubbo:service>
+ -->
+ 	<dubbo:annotation package="com.ai.dubbo.service.impl"/>
+ 
+ </beans>
