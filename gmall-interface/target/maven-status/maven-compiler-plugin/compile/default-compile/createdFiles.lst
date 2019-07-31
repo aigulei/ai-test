@@ -1,0 +1,3 @@
+com\ai\gmall\service\OrderService.class
+com\ai\gmall\service\UserService.class
+com\ai\gmall\bean\UserAddress.class
